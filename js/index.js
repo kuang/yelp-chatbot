@@ -16,11 +16,16 @@ var messages = [], //array that hold the record of each string in chat
 
 // var categories = . / categories.json;
 //edit this function to change what the chatbot says
-var access_token = "t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33dIQ3ThqJ3hzSVZdX9pgt0bwDvdqTTUJ21XXRWxMEvee7T9L1G4p9SHS6iQPeWHx";
+// var access_token = "t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33dIQ3ThqJ3hzSVZdX9pgt0bwDvdqTTUJ21XXRWxMEvee7T9L1G4p9SHS6iQPeWHx";
+
 
 function chatbotResponse() {
     if (counter > 2) {
         botMessage = "Be patient!";
+    }
+    if (counter == 2) {
+        var url = "https://api.yelp.com/v3/businesses/search?location=" + messages[1];
+        getRestuarants(url);
     }
     talking = true;
 
@@ -109,4 +114,19 @@ function chatbotResponse() {
     function placeHolder() {
         document.getElementById("chatbox").placeholder = "";
     }
+
+    // function getRestuarants(url) {
+    //     $.ajax({
+    //         type: "GET",
+    //         beforeSend: function(request) {
+    //             request.setRequestHeader("access_token", access_token);
+    //         },
+    //         url: url,
+    //         data: "json=" + escape(JSON.stringify(createRequestObject)),
+    //         processData: false,
+    //         success: function(msg) {
+    //             $("#results").append("The result =" + StringifyPretty(msg));
+    //         }
+    //     });
+    // }
 }
