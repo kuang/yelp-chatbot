@@ -1,15 +1,17 @@
 //links
 //http://eloquentjavascript.net/09_regexp.html
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
-nlp = window.nlp_compromise;
 
+//text to Speech
+//https://developers.google.com/web/updates/2014/01/Web-apps-that-talk-Introduction-to-the-Speech-Synthesis-API
+nlp = window.nlp_compromise;
 var messages = [], //array that hold the record of each string in chat
     lastUserMessage = "", //keeps track of the most recent input string from the user
     botMessage = "", //var keeps track of what the chatbot is going to say
     botName = 'Yelp Reccomendation Bot', //name of the chatbot
     talking = true, //when false the speach function doesn't work
     counter = 0,
-    output_messages = ["Hi! What city are you in?", "What is your price range on a scale of 1-4?"];
+    output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What is your price range on a scale of 1 to 4?"];
 //
 //
 //****************************************************************
@@ -63,8 +65,6 @@ function newEntry() {
     }
 }
 
-//text to Speech
-//https://developers.google.com/web/updates/2014/01/Web-apps-that-talk-Introduction-to-the-Speech-Synthesis-API
 function Speech(say) {
     if ('speechSynthesis' in window && talking) {
         var utterance = new SpeechSynthesisUtterance(say);
@@ -79,9 +79,30 @@ function Speech(say) {
     }
 }
 
+
+
 //runs the keypress() function when a key is pressed
 document.onkeypress = keyPress;
 //if the key pressed is 'enter' runs the function newEntry()
+function keyPress(e) {
+    var x = e || window.event;
+    var key = (x.keyCode || x.which);
+    if (key == 13 || key == 3) {
+        //runs this function when enter is pressed
+        newEntry();
+    }
+    if (key == 38) {
+        console.log('hi')
+        //document.getElementById("chatbox").value = lastUserMessage;
+    }
+}
+
+//clears the placeholder text ion the chatbox
+//this function is set to run when the users brings focus to the chatbox, by clicking on it
+function placeHolder() {
+    document.getElementById("chatbox").placeholder = "";
+}
+
 function keyPress(e) {
     var x = e || window.event;
     var key = (x.keyCode || x.which);
