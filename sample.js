@@ -27,8 +27,8 @@ app.get('/', function(req, res, next) {
     const clientSecret = 'XOddj1IikQTtwZBEGrSb1AkS6KGeQFEFTShgrO7chQsLJ79ffnNJhFboKufMgdpa';
 
     const searchRequest = {
-        term: 'Four Barrel Coffee',
-        location: 'san francisco, ca'
+        location: req.zip,
+        price: req.price
     };
 
     yelp.accessToken(clientId, clientSecret).then(response => {
