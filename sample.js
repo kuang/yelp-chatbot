@@ -27,8 +27,8 @@ app.get('/', function(req, res, next) {
     const clientSecret = 'XOddj1IikQTtwZBEGrSb1AkS6KGeQFEFTShgrO7chQsLJ79ffnNJhFboKufMgdpa';
 
     const searchRequest = {
-        location: req.zip,
-        price: req.price
+        location: req.get("zip"),
+        price: req.get("price")
     };
 
     yelp.accessToken(clientId, clientSecret).then(response => {
