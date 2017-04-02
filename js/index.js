@@ -23,11 +23,18 @@ var messages = [], //array that hold the record of each string in chat
 //edit this function to change what the chatbot says
 function chatbotResponse() {
     talking = true;
-    botMessage = "I'm confused"; //the default message
-
-    botMessage = output_messages[counter];
-    counter++;
+    botMessage = "Be Patient!"
+    if (counter === 2) {
+        botMessage = output_messages[counter];
+        counter++;
+        call_yelp(messages[2], messages[4]);
+    }
+    if (counter < 2) {
+        botMessage = output_messages[counter];
+        counter++;
+    }
 }
+
 //****************************************************************
 //****************************************************************
 //****************************************************************
@@ -100,4 +107,24 @@ function keyPress(e) {
 //this function is set to run when the users brings focus to the chatbox, by clicking on it
 function placeHolder() {
     document.getElementById("chatbox").placeholder = "";
+}
+
+function call_yelp(zip, price) {
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://api.yelp.com/v3/businesses/search?term=restaurant&latitude=40.82783908257346&longitude=-74.10162448883057",
+        "method": "GET",
+        "headers": {
+            "authorization": "Bearer t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33dIQ3ThqJ3hzSVZdX9pgt0bwDvdqTTUJ21XXRWxMEvee7T9L1G4p9SHS6iQPeWHYx",
+            "cache-control": "no-cache",
+            // "postman-token": "1c66878e-c740-e10d-8d9a-71d731547d2e"
+        }
+    }
+
+
+    $.ajax(settings).done(function(response) {
+        console.log(response);
+
+    });
 }
