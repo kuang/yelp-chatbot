@@ -38,6 +38,6 @@ app.get('/', function(req, res) {
     });
 });
 
-//have our app listen on port 3000
-app.listen(3000);
-console.log('Your app is now running at: http://127.0.0.1:3000/');
+app.set("port", (process.env.PORT || 3000));
+app.listen(app.get("port"));
+console.log('Your app is now running at: ' + app.get("port"));
