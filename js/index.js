@@ -117,12 +117,12 @@ function call_yelp(zip, price) {
         headers: {
             'zip': zip,
             'price': price
-        }
+        },
         success: function(data) {
             console.log(data)
         },
         error: function() {
             alert('boo!');
-        },
+        }
     });
 }
