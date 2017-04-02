@@ -13,9 +13,13 @@ app.configure(function() {
     app.use(express.cookieParser());
     app.use(express.static('static'));
 });
-
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 //routes
-app.get('/', function(req, res) {
+app.get('/', function(req, res, next) {
 
     // Place holders for Yelp Fusion's OAuth 2.0 credentials. Grab them
     // from https://www.yelp.com/developers/v3/manage_app
