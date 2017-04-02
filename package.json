@@ -5,6 +5,7 @@
   "main": "sample.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node sample.js"
   },
   "author": "",
   "license": "MIT",
