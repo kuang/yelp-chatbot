@@ -13,22 +13,12 @@ app.configure(function() {
     app.use(express.cookieParser());
     app.use(express.static('static'));
 });
-
-function setupCORS(req, res, next) {
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With, Content-type,Accept,X-Access-Token,X-Key');
-    res.header('Access-Control-Allow-Origin', '*');
-    if (req.method === 'OPTIONS') {
-        res.status(200).end();
-    } else {
-        next();
-    }
-}
-app.all('/*', setupCORS);
-
-app.use('/', function(req, res) {
-    res.sendFile(path.resolve('client/index.html'))
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
+
 
 //routes
 app.get('/', function(req, res, next) {
@@ -39,8 +29,10 @@ app.get('/', function(req, res, next) {
     const clientSecret = 'XOddj1IikQTtwZBEGrSb1AkS6KGeQFEFTShgrO7chQsLJ79ffnNJhFboKufMgdpa';
 
     const searchRequest = {
-        location: req.get("zip"),
-        price: req.get("price")
+        // location: req.get("zip"),
+        // price: req.get("price")
+        location: 21093,
+        price: 3
     };
 
     yelp.accessToken(clientId, clientSecret).then(response => {
