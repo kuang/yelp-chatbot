@@ -7,25 +7,15 @@ var messages = [], //array that hold the record of each string in chat
     talking = true, //when false the speach function doesn't work
     counter = 0,
     info = {},
+    talking = true,
     data_output = false, //true if the yelp api call has been made
     output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What type of cuisine are you looking for?", "What is your maximum price range on a scale of 1 to 4?", "Give me a second to load some results for you. Say 'y' when you're ready for some Yelp recommendations!"];
 
 
 //edit this function to change what the chatbot says
 function chatbotResponse() {
-    var tempPrice = parseInt("3");
-    var price = "";
-    if (tempPrice === 1) {
-        price = "1";
-    } else {
-        while (tempPrice > 0) {
-            price += tempPrice + ",";
-            tempPrice--;
-        }
-    }
-    price = price.substr(0, price.length - 1);
-    console.log(price);
-    talking = false;
+
+
     if (data_output) { //first recommendation is already out
         if (counter == 20) {
             botMessage = "I'm out of recommendations, sorry!";
