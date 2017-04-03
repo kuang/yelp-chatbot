@@ -29,7 +29,7 @@ app.get('/', function(req, res, next) {
     // from https://www.yelp.com/developers/v3/manage_app
     const clientId = 'b2O99xfc1XALotIer3f_JQ';
     const clientSecret = 'XOddj1IikQTtwZBEGrSb1AkS6KGeQFEFTShgrO7chQsLJ79ffnNJhFboKufMgdpa';
-
+    console.log(req.data);
     const searchRequest = {
         // location: req.get("zip"),
         // price: req.get("price")
