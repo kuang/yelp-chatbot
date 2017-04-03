@@ -2,15 +2,25 @@ nlp = window.nlp_compromise;
 
 var messages = [], //array that hold the record of each string in chat
     lastUserMessage = "", //keeps track of the most recent input string from the user
-    botMessage = "", //var keeps track of what the chatbot is going to say
-    botName = 'Yelp recommendation Chatbot', //name of the chatbot
-    talking = true, //when false the speach function doesn't work
+    botMessage = "", // keeps track of what the chatbot is going to say
+    botName = 'Yelp recommendation Chatbot',
+    talking = true, //toggle speech
     counter = 0,
     info = {},
     talking = true,
     data_output = false, //true if the yelp api call has been made
-    output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What type of cuisine are you looking for?", "What is your maximum price range on a scale of 1 to 4?", "Give me a second to load some results for you. Say 'y' when you're ready for some Yelp recommendations!"];
+    output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What type of cuisine are you looking for?", "What is your maximum price range on a scale of 1 to 4?", "Loading recommendations, please wait..."];
 
+//toggles sound on and off
+function toggleSound() {
+    talking = !talking;
+    if (talking) {
+        $('#sound').text("Turn Sound Off");
+    } else {
+        $('#sound').text("Turn Sound On");
+
+    }
+}
 
 //edit this function to change what the chatbot says
 function chatbotResponse() {
@@ -21,22 +31,23 @@ function chatbotResponse() {
             botMessage = "I'm out of recommendations, sorry!";
         } else {
             botMessage = "";
-            if (counter == 3) {
-                if (lastUserMessage.toLowerCase() !== "y") {
-                    botMessage += "Too bad, here's a recommendation anyway. ";
-                }
-            }
-            if (lastUserMessage.toLowerCase() === "y") {
+            if (counter == 3 || lastUserMessage.toLowerCase() === "next") {
                 botMessage += "How about " + info.businesses[counter - 3].name + "? ";
                 if (info.businesses[counter - 3].rating != "") {
                     botMessage += "This place has a rating of " + info.businesses[counter - 3].rating + " out of 5, with " + info.businesses[counter - 3].review_count + " reviews. ";
                 }
                 if (info.businesses[counter - 3].phone != "") {
-                    botMessage += "You can call " + info.businesses[counter - 3].name + " at " + info.businesses[counter - 3].phone + ". ";
+                    botMessage += "</br>" + "You can call " + info.businesses[counter - 3].name + " at " + info.businesses[counter - 3].phone.substr(1, info.businesses[counter - 3].phone.length) + ". ";
                 }
-
+                var location = info.businesses[counter - 3].location.address1 + " " + info.businesses[counter - 3].location.city + " " + info.businesses[counter - 3].location.state + " " + info.businesses[counter - 3].location.zip_code + "/";
+                location = location.replace(" ", "+"); //location.address1 field is space delimited- this replace function turns those spaces into "+" for the url
+                botMessage += "</br>" + "Click " + "<a href='https://www.google.com/maps/dir//" + location + "'> here</a>" + " for directions on Google Maps. "
+                botMessage += "</br>" + "Click " + "<a href='" + info.businesses[counter - 3].url + "'> here</a>" + " for this restaurant's Yelp profile. "
+                botMessage += "</br> </br> Say 'next' for another recommendation, or 'thanks' to end this session. ";
+            } else if (lastUserMessage.toLowerCase() === "thanks") {
+                botMessage += "No problem! Visit again if you need another recommendation. ";
             } else {
-                botMessage = "say either y or n.";
+                botMessage = "say either 'next' or 'thanks'.";
                 counter--;
             }
             counter++;
@@ -69,7 +80,6 @@ function chatbotResponse() {
 }
 
 //this runs each time enter is pressed.
-//It controls the overall input and output
 function newEntry() {
     //if the message from the user isn't empty then run
     if (document.getElementById("chatbox").value != "") {
@@ -85,12 +95,26 @@ function newEntry() {
         //add the chatbot's name and message to the array messages
         messages.push("<b>" + botName + ":</b> " + botMessage);
         // says the message using the text to speech function written below
-        Speech(botMessage);
         //outputs the last few array elements of messages to html
         for (var i = 1; i < 8; i++) {
             if (messages[messages.length - i])
                 document.getElementById("chatlog" + i).innerHTML = messages[messages.length - i];
         }
+        Speech($("#chatlog1").text().substr(29, $("#chatlog1").text().length));
+        console.log($("#chatlog1").text().substr(29, $("#chatlog1").text().length));
+
+    } else {
+        chatbotResponse();
+        //add the chatbot's name and message to the array messages
+        messages.push("<b>" + botName + ":</b> " + botMessage);
+        // says the message using the text to speech function written below
+        //outputs the last few array elements of messages to html
+        for (var i = 1; i < 8; i++) {
+            if (messages[messages.length - i])
+                document.getElementById("chatlog" + i).innerHTML = messages[messages.length - i];
+        }
+        Speech($("#chatlog1").text().substr(29, $("#chatlog1").text().length));
+        console.log($("#chatlog1").text().substr(29, $("#chatlog1").text().length));
     }
 }
 
@@ -140,6 +164,7 @@ function call_yelp(zip, food, price) {
             console.log(data);
             info = data;
             data_output = true;
+            newEntry();
         },
         error: function() {
             alert("you didn't put in numbers for your zip and price! Refresh this page and try again.");
