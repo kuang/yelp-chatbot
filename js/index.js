@@ -1,27 +1,16 @@
-//links
-//http://eloquentjavascript.net/09_regexp.html
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 nlp = window.nlp_compromise;
 
 var messages = [], //array that hold the record of each string in chat
     lastUserMessage = "", //keeps track of the most recent input string from the user
     botMessage = "", //var keeps track of what the chatbot is going to say
-    botName = 'Chatbot', //name of the chatbot
+    botName = 'Yelp Reccomendation Chatbot', //name of the chatbot
     talking = true, //when false the speach function doesn't work
     counter = 0,
-    info = {};
-data_output = false; //true if the yelp api call has been made
-access_token = "t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33dIQ3ThqJ3hzSVZdX9pgt0bwDvdqTTUJ21XXRWxMEvee7T9L1G4p9SHS6iQPeWHYx",
+    info = {},
+    data_output = false, //true if the yelp api call has been made
     output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What is your price range on a scale of 1 to 4?", "Give me a second to load some results for you. Say 'y' when you're ready for some Yelp reccomendations!"];
-//
-//
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
+
+
 //edit this function to change what the chatbot says
 function chatbotResponse() {
     talking = true;
@@ -65,16 +54,6 @@ function chatbotResponse() {
 
 }
 
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//****************************************************************
-//
-//
-//
 //this runs each time enter is pressed.
 //It controls the overall input and output
 function newEntry() {
@@ -89,12 +68,6 @@ function newEntry() {
         //Speech(lastUserMessage);  //says what the user typed outloud
         //sets the variable botMessage in response to lastUserMessage
         chatbotResponse();
-        if (counter == 2) {
-            setTimeout(function() {
-
-
-            }, 5000);
-        }
         //add the chatbot's name and message to the array messages
         messages.push("<b>" + botName + ":</b> " + botMessage);
         // says the message using the text to speech function written below
@@ -112,13 +85,6 @@ function newEntry() {
 function Speech(say) {
     if ('speechSynthesis' in window && talking) {
         var utterance = new SpeechSynthesisUtterance(say);
-        //msg.voice = voices[10]; // Note: some voices don't support altering params
-        //msg.voiceURI = 'native';
-        //utterance.volume = 1; // 0 to 1
-        //utterance.rate = 0.1; // 0.1 to 10
-        //utterance.pitch = 1; //0 to 2
-        //utterance.text = 'Hello World';
-        //utterance.lang = 'en-US';
         speechSynthesis.speak(utterance);
     }
 }
