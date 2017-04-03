@@ -41,8 +41,8 @@ function chatbotResponse() {
                 }
                 var location = info.businesses[counter - 3].location.address1 + " " + info.businesses[counter - 3].location.city + " " + info.businesses[counter - 3].location.state + " " + info.businesses[counter - 3].location.zip_code + "/";
                 location = location.replace(" ", "+"); //location.address1 field is space delimited- this replace function turns those spaces into "+" for the url
-                botMessage += "</br>" + "Click " + "<a href='https://www.google.com/maps/dir//" + location + "'> here</a>" + " for directions on Google Maps. "
-                botMessage += "</br>" + "Click " + "<a href='" + info.businesses[counter - 3].url + "'> here</a>" + " for this restaurant's Yelp profile. "
+                botMessage += "</br>" + "Click " + "<a target='_blank' href='https://www.google.com/maps/dir//" + location + "'> here</a>" + " for directions on Google Maps. "
+                botMessage += "</br>" + "Click " + "<a target='_blank' href='" + info.businesses[counter - 3].url + "'> here</a>" + " for this restaurant's Yelp profile. "
                 botMessage += "</br> </br> Say 'next' for another recommendation, or 'thanks' to end this session. ";
             } else if (lastUserMessage.toLowerCase() === "thanks") {
                 botMessage += "No problem! Visit again if you need another recommendation. ";
