@@ -3,33 +3,36 @@ nlp = window.nlp_compromise;
 var messages = [], //array that hold the record of each string in chat
     lastUserMessage = "", //keeps track of the most recent input string from the user
     botMessage = "", //var keeps track of what the chatbot is going to say
-    botName = 'Yelp Reccomendation Chatbot', //name of the chatbot
+    botName = 'Yelp recommendation Chatbot', //name of the chatbot
     talking = true, //when false the speach function doesn't work
     counter = 0,
     info = {},
     data_output = false, //true if the yelp api call has been made
-    output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What is your price range on a scale of 1 to 4?", "Give me a second to load some results for you. Say 'y' when you're ready for some Yelp reccomendations!"];
+    output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What type of cuisine are you looking for?", "What is your price range on a scale of 1 to 4?", "Give me a second to load some results for you. Say 'y' when you're ready for some Yelp recommendations!"];
 
 
 //edit this function to change what the chatbot says
 function chatbotResponse() {
-    talking = true;
-    if (data_output) {
-        if (counter > info.length - 1) {
-            botMessage = "I'm out of reccomendations, sorry!";
-        }
-        if (counter == 2) {
-            if (lastUserMessage.toLowerCase() == "y") {
-                botMessage = "How about " + info.businesses[counter - 2].name + "? say y for more information, say n for another suggestion.";
-            } else {
-                botMessage = "Too bad, here's a reccomendation anyway." + " How about " + info.businesses[counter - 2].name + "? say y for more information, say n for another suggestion.";
+    talking = false;
+    if (data_output) { //first recommendation is already out
+        if (counter == 20) {
+            botMessage = "I'm out of recommendations, sorry!";
+        } else {
+            botMessage = "";
+            if (counter == 3) {
+                if (lastUserMessage.toLowerCase() !== "y") {
+                    botMessage += "Too bad, here's a recommendation anyway. ";
+                }
             }
-            counter++;
-        } else if (counter > 2) { //first reccomendation is already out
             if (lastUserMessage.toLowerCase() === "y") {
-                botMessage = "You can call " + info.businesses[counter - 3].name + " at " + info.businesses[counter - 3].phone + ". Here's a link to see where it is on Google Maps: https://www.google.com/maps/dir//" + info.businesses[counter - 3].location.address1 + "+" + info.businesses[counter - 3].location.city + "+" + info.businesses[counter - 3].location.state + "+" + info.businesses[counter - 3].location.zip_code + "/" + ". Say n for another suggestion!";
-            } else if (lastUserMessage.toLowerCase() === "n") {
-                botMessage = "How about " + info.businesses[counter - 2].name + "? say y for more information, say n for another suggestion.";
+                botMessage += "How about " + info.businesses[counter - 3].name + "? ";
+                if (info.businesses[counter - 3].rating != "") {
+                    botMessage += "This place has a rating of " + info.businesses[counter - 3].rating + " out of 5, with " + info.businesses[counter - 3].review_count + " reviews. ";
+                }
+                if (info.businesses[counter - 3].phone != "") {
+                    botMessage += "You can call " + info.businesses[counter - 3].name + " at " + info.businesses[counter - 3].phone + ". ";
+                }
+
             } else {
                 botMessage = "say either y or n.";
                 counter--;
@@ -38,16 +41,25 @@ function chatbotResponse() {
         }
     } else {
         botMessage = "Be Patient!"
-        if (counter === 2) {
-            if (messages[2] == parseInt(messages[2]) && messages[4] == parseInt(messages[4])) {
-                call_yelp(messages[2], messages[4]);
+        if (counter === 3) {
+            if (messages[2] == parseInt(messages[2]) && messages[4] == parseInt(messages[4]) && messages[6] == parseInt(messages[6])) {
+                call_yelp(messages[2], messages[4], messages[6]);
                 botMessage = output_messages[counter];
             } else {
                 botMessage = "You need to input numbers for both your zip code and price. Refresh this page and try again.";
             }
         }
-        if (counter < 2) {
-            botMessage = output_messages[counter];
+        if (counter < 3) {
+            if (counter == 0) {
+                if (lastUserMessage.toLowerCase() !== "i'm hungry") {
+                    botMessage = "Too bad! "
+                } else {
+                    botMessage = "";
+                }
+            } else {
+                botMessage = "";
+            }
+            botMessage += output_messages[counter];
             counter++;
         }
     }
@@ -81,7 +93,7 @@ function newEntry() {
 }
 
 //text to Speech
-//https://developers.google.com/web/updates/2014/01/Web-apps-that-talk-Introduction-to-the-Speech-Synthesis-API
+//https://developers.google.com/web/updates/3014/01/Web-apps-that-talk-Introduction-to-the-Speech-Synthesis-API
 function Speech(say) {
     if ('speechSynthesis' in window && talking) {
         var utterance = new SpeechSynthesisUtterance(say);
@@ -111,14 +123,15 @@ function placeHolder() {
     document.getElementById("chatbox").placeholder = "";
 }
 
-function call_yelp(zip, price) {
+function call_yelp(zip, food, price) {
     $.ajax({
         url: 'https://yelp-chatbot.herokuapp.com/',
         type: 'GET',
         dataType: 'json',
         data: {
             location: zip,
-            price: price
+            price: price,
+            term: food
         },
         success: function(data) {
             console.log(data);
@@ -126,7 +139,7 @@ function call_yelp(zip, price) {
             data_output = true;
         },
         error: function() {
-            alert("you didn't put in numbers for your zip and price!Refresh this page and try again.");
+            alert("you didn't put in numbers for your zip and price! Refresh this page and try again.");
         }
     });
 }
