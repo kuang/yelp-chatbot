@@ -41,7 +41,7 @@ app.get('/', function(req, res, next) {
         const client = yelp.client(response.jsonBody.access_token);
 
         client.search(searchRequest).then(response => {
-            res.send(response.jsonBody);
+            res.send(req.data);
         });
     }).catch(e => {
         console.log(e);
