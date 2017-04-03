@@ -42,7 +42,7 @@ function chatbotResponse() {
     } else {
         botMessage = "Be Patient!"
         if (counter === 3) {
-            if (messages[2] == parseInt(messages[2]) && messages[4] == parseInt(messages[4]) && messages[6] == parseInt(messages[6])) {
+            if (messages[2] == parseInt(messages[2]) && messages[6] == parseInt(messages[6])) {
                 call_yelp(messages[2], messages[4], messages[6]);
                 botMessage = output_messages[counter];
             } else {

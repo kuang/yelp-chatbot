@@ -33,7 +33,7 @@ app.get('/', function(req, res, next) {
     const searchRequest = {
         // location: req.get("zip"),
         // price: req.get("price")
-        term: "restaurants," + req.query.food,
+        term: req.query.term + "restaurant",
         location: req.query.location,
         price: req.query.price
     };
