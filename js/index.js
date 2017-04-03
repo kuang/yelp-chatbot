@@ -114,10 +114,10 @@ function call_yelp(zip, price) {
         url: 'https://yelp-chatbot.herokuapp.com/',
         type: 'GET',
         dataType: 'json',
-        // headers: {
-        // 'zip': zip,
-        // 'price': price
-        // },
+        headers: {
+            'zip': zip,
+            'price': price
+        },
         success: function(data) {
             console.log(data)
         },
