@@ -26,6 +26,9 @@ access_token = "t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33
 function chatbotResponse() {
     talking = true;
     if (data_output) {
+        if (counter > info.length - 1) {
+            botMessage = "I'm out of reccomendations, sorry!";
+        }
         if (counter == 2) {
             if (lastUserMessage.toLowerCase() == "y") {
                 botMessage = "How about " + info.businesses[counter - 2].name + "? say y for more information, say n for another suggestion.";
@@ -35,18 +38,24 @@ function chatbotResponse() {
             counter++;
         } else if (counter > 2) { //first reccomendation is already out
             if (lastUserMessage.toLowerCase() === "y") {
-                botMessage = "You can call " + info.businesses[counter - 3].name + " at " + info.businesses[counter - 3].phone + ". Here's a link to see where it is on Google Maps: . Say n for another suggestion!";
-            } else {
+                botMessage = "You can call " + info.businesses[counter - 3].name + " at " + info.businesses[counter - 3].phone + ". Here's a link to see where it is on Google Maps: https://www.google.com/maps/dir//" + info.businesses[counter - 3].location.address1 + "+" + info.businesses[counter - 3].location.city + "+" + info.businesses[counter - 3].location.state + "+" + info.businesses[counter - 3].location.zip_code + "/" + ". Say n for another suggestion!";
+            } else if (lastUserMessage.toLowerCase() === "n") {
                 botMessage = "How about " + info.businesses[counter - 2].name + "? say y for more information, say n for another suggestion.";
+            } else {
+                botMessage = "say either y or n.";
+                counter--;
             }
             counter++;
         }
     } else {
         botMessage = "Be Patient!"
         if (counter === 2) {
-            botMessage = output_messages[counter];
-            call_yelp(messages[2], messages[4]);
-
+            if (messages[2] == parseInt(messages[2]) && messages[4] == parseInt(messages[4])) {
+                call_yelp(messages[2], messages[4]);
+                botMessage = output_messages[counter];
+            } else {
+                botMessage = "You need to input numbers for both your zip code and price. Refresh this page and try again.";
+            }
         }
         if (counter < 2) {
             botMessage = output_messages[counter];
@@ -80,6 +89,12 @@ function newEntry() {
         //Speech(lastUserMessage);  //says what the user typed outloud
         //sets the variable botMessage in response to lastUserMessage
         chatbotResponse();
+        if (counter == 2) {
+            setTimeout(function() {
+
+
+            }, 5000);
+        }
         //add the chatbot's name and message to the array messages
         messages.push("<b>" + botName + ":</b> " + botMessage);
         // says the message using the text to speech function written below
@@ -145,7 +160,7 @@ function call_yelp(zip, price) {
             data_output = true;
         },
         error: function() {
-            alert('you fucking failed you piece of shit');
+            alert("you didn't put in numbers for your zip and price!Refresh this page and try again.");
         }
     });
 }
