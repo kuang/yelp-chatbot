@@ -13,6 +13,18 @@ var messages = [], //array that hold the record of each string in chat
 
 //edit this function to change what the chatbot says
 function chatbotResponse() {
+    var tempPrice = parseInt("3");
+    var price = "";
+    if (tempPrice === 1) {
+        price = "1";
+    } else {
+        while (tempPrice > 0) {
+            price += tempPrice + ",";
+            tempPrice--;
+        }
+    }
+    price = price.substr(0, price.length - 1);
+    console.log(price);
     talking = false;
     if (data_output) { //first recommendation is already out
         if (counter == 20) {
@@ -124,6 +136,7 @@ function placeHolder() {
 }
 
 function call_yelp(zip, food, price) {
+
     $.ajax({
         url: 'https://yelp-chatbot.herokuapp.com/',
         type: 'GET',
