@@ -26,14 +26,14 @@ access_token = "t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33
 function chatbotResponse() {
     talking = true;
     if (data_output) {
-        botMessage = "How about " + info.businesses[counter].name + "?";
+        botMessage = "How about " + info.businesses[counter - 2].name + "?";
         counter++;
     } else {
         botMessage = "Be Patient!"
         if (counter === 2) {
             botMessage = output_messages[counter];
             call_yelp(messages[2], messages[4]);
-            counter = 0; //reset counter
+            // counter = 0; //reset counter
             data_output = true;
 
         }
