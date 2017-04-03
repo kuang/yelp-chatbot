@@ -33,8 +33,8 @@ app.get('/', function(req, res, next) {
     const searchRequest = {
         // location: req.get("zip"),
         // price: req.get("price")
-        location: 21093,
-        price: 3
+        location: req.data["location"],
+        // price: 3
     };
 
     yelp.accessToken(clientId, clientSecret).then(response => {
