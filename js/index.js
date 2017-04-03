@@ -8,7 +8,7 @@ var messages = [], //array that hold the record of each string in chat
     counter = 0,
     info = {},
     data_output = false, //true if the yelp api call has been made
-    output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What type of cuisine are you looking for?", "What is your price range on a scale of 1 to 4?", "Give me a second to load some results for you. Say 'y' when you're ready for some Yelp recommendations!"];
+    output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What type of cuisine are you looking for?", "What is your maximum price range on a scale of 1 to 4?", "Give me a second to load some results for you. Say 'y' when you're ready for some Yelp recommendations!"];
 
 
 //edit this function to change what the chatbot says

@@ -30,12 +30,24 @@ app.get('/', function(req, res, next) {
     const clientId = 'b2O99xfc1XALotIer3f_JQ';
     const clientSecret = 'XOddj1IikQTtwZBEGrSb1AkS6KGeQFEFTShgrO7chQsLJ79ffnNJhFboKufMgdpa';
     console.log(req.data);
+    var tempPrice = parseInt(req.query.price);
+    var price = "";
+    if (tempPrice === 1) {
+        price = "1";
+    } else {
+        while (tempPrice > 0) {
+            price += tempPrice + ",";
+        }
+    }
+    price = price.substr(0, price.length - 1);
+
+
     const searchRequest = {
         // location: req.get("zip"),
         // price: req.get("price")
         term: req.query.term + "restaurant",
         location: req.query.location,
-        price: req.query.price
+        price: price
     };
 
     yelp.accessToken(clientId, clientSecret).then(response => {
