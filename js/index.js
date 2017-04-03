@@ -12,7 +12,7 @@ var messages = [], //array that hold the record of each string in chat
     info = {};
 data_output = false; //true if the yelp api call has been made
 access_token = "t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33dIQ3ThqJ3hzSVZdX9pgt0bwDvdqTTUJ21XXRWxMEvee7T9L1G4p9SHS6iQPeWHYx",
-    output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What is your price range on a scale of 1 to 4?", "Give me a second to load some results for you."];
+    output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What is your price range on a scale of 1 to 4?", "Give me a second to load some results for you. Say 'y' when you're ready for some Yelp reccomendations!"];
 //
 //
 //****************************************************************
@@ -26,15 +26,26 @@ access_token = "t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33
 function chatbotResponse() {
     talking = true;
     if (data_output) {
-        botMessage = "How about " + info.businesses[counter - 2].name + "?";
-        counter++;
+        if (counter == 2) {
+            if (lastUserMessage.toLowerCase() == "y") {
+                botMessage = "How about " + info.businesses[counter - 2].name + "? say y for more information, say n for another suggestion.";
+            } else {
+                botMessage = "Too bad, here's a reccomendation anyway." + " How about " + info.businesses[counter - 2].name + "? say y for more information, say n for another suggestion.";
+            }
+            counter++;
+        } else if (counter > 2) { //first reccomendation is already out
+            if (lastUserMessage.toLowerCase() === "y") {
+                botMessage = "You can call " + info.businesses[counter - 3].name + " at " + info.businesses[counter - 3].phone + ". Here's a link to see where it is on Google Maps: . Say n for another suggestion!";
+            } else {
+                botMessage = "How about " + info.businesses[counter - 2].name + "? say y for more information, say n for another suggestion.";
+            }
+            counter++;
+        }
     } else {
         botMessage = "Be Patient!"
         if (counter === 2) {
             botMessage = output_messages[counter];
             call_yelp(messages[2], messages[4]);
-            // counter = 0; //reset counter
-            data_output = true;
 
         }
         if (counter < 2) {
@@ -131,7 +142,7 @@ function call_yelp(zip, price) {
         success: function(data) {
             console.log(data);
             info = data;
-            newEntry();
+            data_output = true;
         },
         error: function() {
             alert('you fucking failed you piece of shit');
