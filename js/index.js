@@ -9,7 +9,9 @@ var messages = [], //array that hold the record of each string in chat
     botName = 'Chatbot', //name of the chatbot
     talking = true, //when false the speach function doesn't work
     counter = 0,
-    access_token = "t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33dIQ3ThqJ3hzSVZdX9pgt0bwDvdqTTUJ21XXRWxMEvee7T9L1G4p9SHS6iQPeWHYx",
+    info = {};
+data_output = false; //true if the yelp api call has been made
+access_token = "t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33dIQ3ThqJ3hzSVZdX9pgt0bwDvdqTTUJ21XXRWxMEvee7T9L1G4p9SHS6iQPeWHYx",
     output_messages = ["First of all, I need to ask a few basic questions. What zip code are you in?", "What is your price range on a scale of 1 to 4?", "Give me a second to load some results for you."];
 //
 //
@@ -23,16 +25,24 @@ var messages = [], //array that hold the record of each string in chat
 //edit this function to change what the chatbot says
 function chatbotResponse() {
     talking = true;
-    botMessage = "Be Patient!"
-    if (counter === 2) {
-        botMessage = output_messages[counter];
+    if (data_output) {
+        botMessage = "How about " + info.businesses[counter].name + "?";
         counter++;
-        call_yelp(messages[2], messages[4]);
+    } else {
+        botMessage = "Be Patient!"
+        if (counter === 2) {
+            botMessage = output_messages[counter];
+            call_yelp(messages[2], messages[4]);
+            counter = 0; //reset counter
+            data_output = true;
+
+        }
+        if (counter < 2) {
+            botMessage = output_messages[counter];
+            counter++;
+        }
     }
-    if (counter < 2) {
-        botMessage = output_messages[counter];
-        counter++;
-    }
+
 }
 
 //****************************************************************
@@ -119,7 +129,9 @@ function call_yelp(zip, price) {
             price: price
         },
         success: function(data) {
-            console.log(data)
+            console.log(data);
+            info = data;
+            newEntry();
         },
         error: function() {
             alert('you fucking failed you piece of shit');

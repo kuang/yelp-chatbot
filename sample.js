@@ -43,7 +43,6 @@ app.get('/', function(req, res, next) {
 
         client.search(searchRequest).then(response => {
             res.send(response.jsonBody);
-            // t9tChAnMypsFLyTcn1_TOIXY9jQ4pVjeZbGWWFik7G4EP6bgj7XLtAX--f3_Fm33dIQ3ThqJ3hzSVZdX9pgt0bwDvdqTTUJ21XXRWxMEvee7T9L1G4p9SHS6iQPeWHYx
         });
     }).catch(e => {
         console.log(e);
