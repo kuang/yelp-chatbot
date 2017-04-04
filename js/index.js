@@ -55,7 +55,11 @@ function chatbotResponse() {
     } else {
         botMessage = "Be Patient!"
         if (counter === 3) {
-            if (messages[2] == parseInt(messages[2]) && messages[6] == parseInt(messages[6])) {
+            if (messages[6] < 1 || messages[6] > 4) {
+                botMessage = "input a valid maximum price.";
+                messages.pop();
+                messages.pop();
+            } else if (messages[2] == parseInt(messages[2]) && messages[6] == parseInt(messages[6])) {
                 call_yelp(messages[2], messages[4], messages[6]);
                 botMessage = output_messages[counter];
             } else {
@@ -64,6 +68,12 @@ function chatbotResponse() {
         }
         if (counter < 3) {
             botMessage = output_messages[counter];
+            if (messages[2] > 99999) {
+                botMessage = "input a valid zip code.";
+                messages.pop();
+                messages.pop();
+                counter--;
+            }
             counter++;
         }
     }
