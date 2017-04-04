@@ -63,16 +63,7 @@ function chatbotResponse() {
             }
         }
         if (counter < 3) {
-            if (counter == 0) {
-                if (lastUserMessage.toLowerCase() !== "i'm hungry") {
-                    botMessage = "Too bad! "
-                } else {
-                    botMessage = "";
-                }
-            } else {
-                botMessage = "";
-            }
-            botMessage += output_messages[counter];
+            botMessage = output_messages[counter];
             counter++;
         }
     }
