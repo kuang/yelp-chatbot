@@ -27,8 +27,7 @@ function chatbotResponse() {
     if (data_output) { //first recommendation is already out
         if (info.businesses.length == 0) {
             botMessage = "Yelp cannot find any restaurants meeting that criteria. Refresh this page and try again!";
-        }
-        if (counter == 20) {
+        } else if (counter == 20) {
             botMessage = "I'm out of recommendations, sorry!";
         } else {
             botMessage = "";
