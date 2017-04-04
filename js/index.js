@@ -25,6 +25,9 @@ function chatbotResponse() {
 
 
     if (data_output) { //first recommendation is already out
+        if (info.businesses.length == 0) {
+            botMessage = "Yelp cannot find any restaurants meeting that criteria. Refresh this page and try again!";
+        }
         if (counter == 20) {
             botMessage = "I'm out of recommendations, sorry!";
         } else {
@@ -68,7 +71,7 @@ function chatbotResponse() {
         }
         if (counter < 3) {
             botMessage = output_messages[counter];
-            if (messages[2] > 99999) {
+            if (messages[2] > 99999 || messages[2] < 0) {
                 botMessage = "input a valid zip code.";
                 messages.pop();
                 messages.pop();
