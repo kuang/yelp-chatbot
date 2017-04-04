@@ -104,7 +104,6 @@ function newEntry() {
                 document.getElementById("chatlog" + i).innerHTML = messages[messages.length - i];
         }
         Speech($("#chatlog1").text().substr(29, $("#chatlog1").text().length));
-        console.log($("#chatlog1").text().substr(29, $("#chatlog1").text().length));
 
     } else {
         chatbotResponse();
@@ -117,7 +116,6 @@ function newEntry() {
                 document.getElementById("chatlog" + i).innerHTML = messages[messages.length - i];
         }
         Speech($("#chatlog1").text().substr(29, $("#chatlog1").text().length));
-        console.log($("#chatlog1").text().substr(29, $("#chatlog1").text().length));
     }
 }
 
@@ -170,7 +168,7 @@ function call_yelp(zip, food, price) {
             newEntry();
         },
         error: function() {
-            alert("you didn't put in numbers for your zip and price! Refresh this page and try again.");
+            alert("API call failed! contact zk65@cornell.edu asap, thank you!");
         }
     });
 }
