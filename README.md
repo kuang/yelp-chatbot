@@ -11,7 +11,7 @@ The back end is a node.js server that uses the Express.js library to handle requ
 
 
 
-In the future, I hope to accomplish two things:
+In the future, I hope to accomplish four things:
 
 1. Find a way to not store the client id/secret id/auth token as plaintext- This is my first time working with a full stack application, so learning best practices is something that I want to do for future projects (and this one).
 
