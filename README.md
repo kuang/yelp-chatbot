@@ -1,5 +1,5 @@
 App: http://justinkuang.com/yelp-chatbot/
-Github: https://github.com/cornellian/yelp-chatbot
+Github: https://github.com/kuang/yelp-chatbot
 
 I built an online chatbot that asks users for several attributes, and then finds relevant restaurants that fulfill such criteria.  The resulting information is presented to the user via the chatbot interface as a conversational response.
 
